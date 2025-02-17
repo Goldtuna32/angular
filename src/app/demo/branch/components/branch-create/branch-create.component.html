@@ -1,0 +1,91 @@
+<div class="container mt-4">
+    <div class="card shadow-lg">
+        <div class="card-header bg-primary text-white">
+            <h4 class="mb-0">Create Branch</h4>
+        </div>
+        <div class="card-body">
+            <form [formGroup]="branchForm" (ngSubmit)="onSubmit()">
+                <!-- Branch Name -->
+                <div class="mb-4 mt-3">
+                    <label for="branchName" class="form-label">Branch Name <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" id="branchName" formControlName="branchName"
+                        placeholder="Enter branch name">
+                    <div *ngIf="f['branchName'].touched && f['branchName'].invalid" class="text-danger">
+                        Branch Name is required.
+                    </div>
+                </div>
+
+                <!-- Phone Number -->
+                <div class="mb-4">
+                    <label for="phoneNumber" class="form-label">Phone Number <span class="text-danger">*</span></label>
+                    <input type="tel" class="form-control" id="phoneNumber" formControlName="phoneNumber"
+                        placeholder="Enter phone number">
+                    <div *ngIf="f['phoneNumber'].touched && f['phoneNumber'].invalid" class="text-danger">
+                        <span *ngIf="f['phoneNumber'].errors?.['required']">Phone Number is required.</span>
+                        <span *ngIf="f['phoneNumber'].errors?.['pattern']">Enter a valid phone number (10-15
+                            digits).</span>
+                    </div>
+                </div>
+
+                <!-- Email -->
+                <div class="mb-4">
+                    <label for="email" class="form-label">Email <span class="text-danger">*</span></label>
+                    <input type="email" class="form-control" id="email" formControlName="email"
+                        placeholder="Enter email">
+                    <div *ngIf="f['email'].touched && f['email'].invalid" class="text-danger">
+                        <span *ngIf="f['email'].errors?.['required']">Email is required.</span>
+                        <span *ngIf="f['email'].errors?.['email']">Enter a valid email address.</span>
+                    </div>
+                </div>
+
+                <!-- Address Fields -->
+                <div class="row mb-4">
+                    <div class="col-md-4">
+                        <label for="city" class="form-label">City <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="city" formControlName="city"
+                            placeholder="Enter city">
+                        <div *ngIf="f['city'].touched && f['city'].invalid" class="text-danger">
+                            City is required.
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="town" class="form-label">Town <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="town" formControlName="town"
+                            placeholder="Enter town">
+                        <div *ngIf="f['town'].touched && f['town'].invalid" class="text-danger">
+                            Town is required.
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="street" class="form-label">Street <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="street" formControlName="street"
+                            placeholder="Enter street">
+                        <div *ngIf="f['street'].touched && f['street'].invalid" class="text-danger">
+                            Street is required.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Status Dropdown -->
+                <div class="mb-4">
+                    <label for="status" class="form-label">Status <span class="text-danger">*</span></label>
+                    <select class="form-select" id="status" formControlName="status">
+                        <option value="" disabled selected>Select status</option>
+                        <option value="1">Active</option>
+                        <option value="0">Inactive</option>
+                    </select>
+                    <div *ngIf="f['status'].touched && f['status'].invalid" class="text-danger">
+                        Status is required.
+                    </div>
+                </div>
+
+                <!-- Submit Button -->
+                <div class="text-end">
+                    <button type="submit" class="btn btn-primary" [disabled]="branchForm.invalid">
+                        <i class="feather icon-check"></i> Create Branch
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
