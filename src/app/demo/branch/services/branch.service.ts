@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class BranchService {
-  private baseUrl = 'http://localhost:8080/api/branches'; // Adjust as needed
+  private baseUrl = 'http://localhost:8080/api/branches';  
 
   constructor(private http: HttpClient) { }
 
@@ -18,5 +18,18 @@ export class BranchService {
   // Create a new branch
   createBranch(branchData: any): Observable<any> {
     return this.http.post<any>(this.baseUrl, branchData);
+  }
+
+  updateBranch(id: number, branchData: any): Observable<any> {
+    return this.http.put<any>(`${this.baseUrl}/${id}`, branchData);
+  }
+
+  // ✅ Delete a branch by ID
+  deleteBranch(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.baseUrl}/${id}`);
+  }
+
+  getBranchById(id: number): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}/${id}`);
   }
 }

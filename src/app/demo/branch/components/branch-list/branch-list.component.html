@@ -1,1 +1,51 @@
-<p>branch-list works!</p>
+<div class="container mt-4">
+    <div class="card shadow-lg">
+        <div class="card-header bg-primary text-white">
+            <h4 class="mb-0">Branch List</h4>
+        </div>
+        <div class="card-body">
+            <div *ngIf="loading" class="text-center">
+                <p>Loading branches...</p>
+            </div>
+
+            <div *ngIf="errorMessage" class="alert alert-danger">
+                {{ errorMessage }}
+            </div>
+
+            <table *ngIf="!loading && branches.length" class="table table-bordered table-striped">
+                <thead class="table-dark">
+                    <tr>
+                        <th>ID</th>
+                        <th>Branch Name</th>
+                        <th>Phone</th>
+                        <th>Email</th>
+                        <th>Address</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let branch of branches">
+                        <td>{{ branch.id }}</td>
+                        <td>{{ branch.branchName }}</td>
+                        <td>{{ branch.phoneNumber }}</td>
+                        <td>{{ branch.email }}</td>
+                        <td>{{ branch.region }}, {{ branch.district }}, {{ branch.township }}</td>
+                        <td>
+                            <span class="badge bg-success" *ngIf="branch.status === 1">Active</span>
+                            <span class="badge bg-danger" *ngIf="branch.status === 0">Inactive</span>
+                        </td>
+                        <td>
+                            <button class="btn btn-warning btn-sm" (click)="editBranch(branch.id)">Edit</button>
+                            <button class="btn btn-danger btn-sm ms-2" (click)="deleteBranch(branch.id)">Delete</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <p *ngIf="!loading && branches.length === 0" class="text-center text-muted">
+                No branches found.
+            </p>
+        </div>
+    </div>
+</div>

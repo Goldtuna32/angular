@@ -44,6 +44,11 @@ const routes: Routes = [
         path: 'branch/create',
         loadComponent: () => import('./demo/branch/components/branch-create/branch-create.component')
           .then(m => m.BranchCreateComponent)
+      },
+      {
+        path: 'branch/list',
+        loadComponent: () => import('./demo/branch/components/branch-list/branch-list.component')
+          .then(m => m.BranchListComponent)
       }
 
     ]

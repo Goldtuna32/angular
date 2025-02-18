@@ -87,9 +87,17 @@
                     </div>
                 </div>
 
-                <!-- Submit Button -->
+                <div class="mb-4">
+                    <label for="street" class="form-label">Street <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" id="street" formControlName="street"
+                        placeholder="Enter street">
+                    <div *ngIf="branchForm.controls['street'].touched && branchForm.controls['street'].invalid" class="text-danger">
+                        <span *ngIf="branchForm.controls['street'].errors?.['street']">Street is required.</span>
+                    </div>
+                </div>
+
                 <div class="text-end">
-                    <button type="submit" class="btn btn-primary" [disabled]="branchForm.invalid">
+                    <button type="submit" class="btn btn-primary" [disabled]="!isFormFullyFilled()">
                         <i class="feather icon-check"></i> Create Branch
                     </button>
                 </div>
