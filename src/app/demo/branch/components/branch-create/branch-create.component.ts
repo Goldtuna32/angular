@@ -23,7 +23,7 @@ export class BranchCreateComponent {
 
   ngOnInit(): void {
     this.branchForm = this.fb.group({
-      region: ['', Validators.required],
+      region: ['', Validators.required,],
       district: ['', Validators.required],
       township: ['', Validators.required],
       branchName: ['', Validators.required],
@@ -75,7 +75,7 @@ export class BranchCreateComponent {
           status: this.branchForm.value.status
         },
         address: {
-          region: this.branchForm.value.region,
+          region: this.branchForm.value.region.trim(),
           district: this.branchForm.value.district,
           township: this.branchForm.value.township,
           street: this.branchForm.value.street
