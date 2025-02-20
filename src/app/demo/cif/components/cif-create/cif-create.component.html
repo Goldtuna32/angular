@@ -1,0 +1,119 @@
+<div class="container mt-4">
+    <div class="card shadow-lg">
+      <div class="card-header bg-primary text-white">
+        <h4 class="mb-0">Create CIF</h4>
+      </div>
+      <div class="card-body">
+        <form [formGroup]="cifForm" (ngSubmit)="onSubmit()">
+          
+          <!-- Name -->
+          <div class="mb-3">
+            <label class="form-label">Name</label>
+            <input type="text" class="form-control" formControlName="name" placeholder="Enter full name">
+          </div>
+  
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <label class="form-label">NRC Prefix</label>
+              <select class="form-select" formControlName="nrcPrefix" (change)="onNrcPrefixChange($event)">
+                <option value="" disabled>Select NRC</option>
+                <option *ngFor="let nrc of nrcFormats" [value]="nrc.nrc_code">{{ nrc.nrc_code }} - {{ nrc.name_en }}</option>
+              </select>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">NRC Number</label>
+              <input type="text" class="form-control" formControlName="nrcNumber" placeholder="Enter 6-digit NRC number">
+            </div>
+          </div>
+          
+  
+          <!-- Date of Birth -->
+          <div class="mb-3">
+            <label class="form-label">Date of Birth</label>
+            <input type="date" class="form-control" formControlName="dob">
+          </div>
+  
+          <!-- Gender -->
+          <div class="mb-3">
+            <label class="form-label">Gender</label>
+            <select class="form-select" formControlName="gender">
+              <option value="" disabled selected>Select Gender</option>
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+            </select>
+          </div>
+  
+          <!-- Phone Number -->
+          <div class="mb-3">
+            <label class="form-label">Phone Number</label>
+            <input type="tel" class="form-control" formControlName="phoneNumber">
+          </div>
+  
+          <!-- Email -->
+          <div class="mb-3">
+            <label class="form-label">Email</label>
+            <input type="email" class="form-control" formControlName="email">
+          </div>
+  
+          <!-- Address -->
+          <div class="mb-3">
+            <label class="form-label">Address</label>
+            <input type="text" class="form-control" formControlName="address">
+          </div>
+  
+          <!-- Occupation -->
+          <div class="mb-3">
+            <label class="form-label">Occupation</label>
+            <input type="text" class="form-control" formControlName="occupation">
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Marital Status</label>
+            <select class="form-select" formControlName="maritalStatus">
+              <option value="" disabled selected>Select Marital Status</option>
+              <option value="Single">Single</option>
+              <option value="Married">Married</option>
+            </select>
+          </div>
+          
+  
+          <!-- Income Source -->
+          <div class="mb-3">
+            <label class="form-label">Income Source</label>
+            <input type="text" class="form-control" formControlName="incomeSource">
+          </div>
+  
+          <!-- Branch -->
+          <div class="mb-3">
+            <label class="form-label">Branch</label>
+            <select class="form-select" formControlName="branchId">
+              <option value="" disabled selected>Select Branch</option>
+              <option *ngFor="let branch of branches" [value]="branch.id">
+                {{ branch.branchName }}
+              </option>
+            </select>
+          </div>
+  
+          <!-- Upload Front NRC -->
+          <div class="mb-3">
+            <label class="form-label">Upload Front NRC</label>
+            <input type="file" class="form-control" (change)="onFileChange($event, 'front')">
+          </div>
+  
+          <!-- Upload Back NRC -->
+          <div class="mb-3">
+            <label class="form-label">Upload Back NRC</label>
+            <input type="file" class="form-control" (change)="onFileChange($event, 'back')">
+          </div>
+  
+          <!-- Submit Button -->
+<div class="text-end">
+  <button type="submit" class="btn btn-primary" [disabled]="!isFormValid()">Create CIF</button>
+</div>
+
+  
+        </form>
+      </div>
+    </div>
+  </div>
+  

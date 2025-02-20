@@ -1,0 +1,85 @@
+<div class="container mt-4">
+  <div class="card shadow-lg">
+    <div class="card-header bg-primary text-white">
+      <h4 class="mb-0">CIF List</h4>
+    </div>
+    <div class="card-body">
+      
+      <!-- Show loading spinner -->
+      <div *ngIf="loading" class="text-center">
+        <mat-spinner color="primary"></mat-spinner>
+      </div>
+
+      <!-- Show error message if loading fails -->
+      <div *ngIf="errorMessage" class="alert alert-danger">
+        {{ errorMessage }}
+      </div>
+
+      <!-- Search Input -->
+      <div class="mb-3">
+        <input matInput (keyup)="applyFilter($event)" placeholder="Search..." class="form-control">
+      </div>
+
+      <!-- Angular Material Data Table -->
+      <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
+        
+        <!-- ID Column -->
+        <ng-container matColumnDef="id">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
+          <td mat-cell *matCellDef="let row">{{ row.id }}</td>
+        </ng-container>
+
+        <!-- Name Column -->
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
+          <td mat-cell *matCellDef="let row">{{ row.name }}</td>
+        </ng-container>
+
+        <!-- NRC Number Column -->
+        <ng-container matColumnDef="nrcNumber">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>NRC Number</th>
+          <td mat-cell *matCellDef="let row">{{ row.nrcNumber }}</td>
+        </ng-container>
+
+        <!-- DOB Column -->
+        <ng-container matColumnDef="dob">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>DOB</th>
+          <td mat-cell *matCellDef="let row">{{ row.dob }}</td>
+        </ng-container>
+
+        <!-- Phone Column -->
+        <ng-container matColumnDef="phoneNumber">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Phone</th>
+          <td mat-cell *matCellDef="let row">{{ row.phoneNumber }}</td>
+        </ng-container>
+
+        <!-- Email Column -->
+        <ng-container matColumnDef="email">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Email</th>
+          <td mat-cell *matCellDef="let row">{{ row.email }}</td>
+        </ng-container>
+
+        <!-- Actions Column -->
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef>Actions</th>
+          <td mat-cell *matCellDef="let row">
+            <button mat-icon-button color="primary" (click)="editCIF(row.id)">
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button mat-icon-button color="warn" (click)="deleteCIF(row.id)">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </td>
+        </ng-container>
+
+        <!-- Header and Row Definitions -->
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+
+      <!-- Paginator -->
+      <mat-paginator [pageSize]="10" showFirstLastButtons></mat-paginator>
+
+    </div>
+  </div>
+</div>

@@ -55,6 +55,28 @@ export const NavigationItems: NavigationItem[] = [
         icon: 'feather icon-list' // 📋 Represents a list of branches
       }
     ]
+  },
+  {
+    id: 'CIF',
+    title: 'CIF',
+    type: 'group',
+    icon: 'feather icon-home', // 🏢 Represents a branch
+    children: [
+      {
+        id: 'create branch',
+        title: 'Create CIF',
+        type: 'item',
+        url: '/cif/create',
+        icon: 'feather icon-plus' // ➕ Indicates adding a new branch
+      },
+      {
+        id: 'view branch',
+        title: 'All CIf',
+        type: 'item',
+        url: '/cif/list',
+        icon: 'feather icon-list' // 📋 Represents a list of branches
+      }
+    ]
   }
   ,
   {

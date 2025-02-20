@@ -1,5 +1,5 @@
 {
-  "Magway Region": {
+  "Magway": {
     "Gangaw": [
       "Gangaw",
       "Kyaukhtu",
@@ -37,7 +37,7 @@
       "Thayet"
     ]
   },
-  "Mandalay Region": {
+  "Mandalay ": {
     "Kyaukse": [
       "Kyaukse",
       "Myittha",
@@ -228,7 +228,7 @@
       "Ywangan"
     ]
   },
-  "Ayeyarwady Region": {
+  "Ayeyarwady ": {
     "Hinthada": [
       "Hinthada",
       "Ingapu",
@@ -275,7 +275,7 @@
       "Pyapon"
     ]
   },
-  "Bago Region": {
+  "Bago ": {
     "Bago": [
       "Aungmyin",
       "Bago",
@@ -339,7 +339,7 @@
       "Zigon"
     ]
   },
-  "Yangon Region": {
+  "Yangon ": {
     "East Yangon": [
       "Botataung",
       "City",
@@ -440,7 +440,7 @@
       "Sumprabum"
     ]
   },
-  "Sagaing Region": {
+  "Sagaing ": {
     "Hkamti": [
       "Donhee",
       "Hkamti",
@@ -555,7 +555,7 @@
       "Zingyeik"
     ]
   },
-  "Tanintharyi Region": {
+  "Tanintharyi ": {
     "Dawei": [
       "Dawei",
       "Kaleinaung",

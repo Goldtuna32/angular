@@ -1,7 +1,7 @@
 // Angular Import
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-
+ 
 // project import
 import { AdminComponent } from './theme/layout/admin/admin.component';
 import { GuestComponent } from './theme/layout/guest/guest.component';
@@ -49,6 +49,21 @@ const routes: Routes = [
         path: 'branch/list',
         loadComponent: () => import('./demo/branch/components/branch-list/branch-list.component')
           .then(m => m.BranchListComponent)
+      },
+      {
+        path: 'cif/create',
+        loadComponent: () => import('./demo/cif/components/cif-create/cif-create.component')
+          .then(m => m.CifCreateComponent)
+      },
+      { 
+        path: 'cif/list',
+        loadComponent: () => import('./demo/cif/components/cif-list/cif-list.component')
+          .then(m => m.CifListComponent)
+      },
+      { 
+        path: 'cif/edit/:id',
+        loadComponent: () => import('./demo/cif/components/cif-edit/cif-edit.component')
+          .then(m => m.CifEditComponent)
       }
 
     ]
