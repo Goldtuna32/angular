@@ -21,7 +21,7 @@
       </div>
 
       <!-- Angular Material Data Table -->
-      <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
+      <table mat-table [dataSource]="dataSource" matSort class="table table-striped">
         
         <!-- ID Column -->
         <ng-container matColumnDef="id">
@@ -44,7 +44,7 @@
         <!-- DOB Column -->
         <ng-container matColumnDef="dob">
           <th mat-header-cell *matHeaderCellDef mat-sort-header>DOB</th>
-          <td mat-cell *matCellDef="let row">{{ row.dob }}</td>
+          <td mat-cell *matCellDef="let row">{{ row.dob | date: 'shortDate' }}</td>
         </ng-container>
 
         <!-- Phone Column -->
@@ -63,11 +63,11 @@
         <ng-container matColumnDef="actions">
           <th mat-header-cell *matHeaderCellDef>Actions</th>
           <td mat-cell *matCellDef="let row">
-            <button mat-icon-button color="primary" (click)="editCIF(row.id)">
-              <mat-icon>edit</mat-icon>
-            </button>
-            <button mat-icon-button color="warn" (click)="deleteCIF(row.id)">
-              <mat-icon>delete</mat-icon>
+            <button class="btn btn-primary btn-sm me-2" (click)="editCIF(row)" matTooltip="Edit">
+              <i class="bi bi-pencil"></i> Edit
+            </button>            
+            <button class="btn btn-danger btn-sm" (click)="deleteCIF(row.id)" matTooltip="Delete">
+              <i class="bi bi-trash"></i> Delete
             </button>
           </td>
         </ng-container>
@@ -80,6 +80,8 @@
       <!-- Paginator -->
       <mat-paginator [pageSize]="10" showFirstLastButtons></mat-paginator>
 
+
+      
     </div>
   </div>
 </div>
