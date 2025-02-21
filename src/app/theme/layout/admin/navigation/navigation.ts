@@ -77,6 +77,72 @@ export const NavigationItems: NavigationItem[] = [
         icon: 'feather icon-list' // 📋 Represents a list of branches
       }
     ]
+  },
+  {
+    id: 'Loan',
+    title: 'Loan',
+    type: 'group',
+    icon: 'feather icon-home', // 🏢 Represents a branch
+    children: [
+      {
+        id: 'create loan',
+        title: 'Create Loan',
+        type: 'item',
+        url: '/loan/create',
+        icon: 'feather icon-plus' // ➕ Indicates adding a new branch
+      },
+      {
+        id: 'view loan',
+        title: 'All Loan',
+        type: 'item',
+        url: '/loan/list',
+        icon: 'feather icon-list' // 📋 Represents a list of branches
+      }
+    ]
+  },
+  {
+    id: 'Saving Account',
+    title: 'Saving Account',
+    type: 'group',
+    icon: 'feather icon-home', // 🏢 Represents a branch
+    children: [
+      {
+        id: 'create account',
+        title: 'Create account',
+        type: 'item',
+        url: '/saving-account/account-create',
+        icon: 'feather icon-plus' // ➕ Indicates adding a new branch
+      },
+      {
+        id: 'view saving account',
+        title: 'All Saving Account',
+        type: 'item',
+        url: '/saving-account/account-list',
+        icon: 'feather icon-list' // 📋 Represents a list of branches
+      }
+    ]
+  },
+  {
+    id: 'Current Account',
+    title: 'Current Account',
+    type: 'group',
+    icon: 'feather icon-home', // 🏢 Represents a branch
+    children: [
+      {
+        id: 'create account',
+        title: 'Create account',
+        type: 'item',
+        url: '/current-account/account-create',
+        icon: 'feather icon-plus' // ➕ Indicates adding a new branch
+      },
+      {
+        id: 'view current account',
+        title: 'All Current Account',
+        type: 'item',
+        url: '/current-account/account-list',
+        icon: 'feather icon-list' // 📋 Represents a list of branches
+      }
+    ]
   }
   ,
   {

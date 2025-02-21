@@ -64,7 +64,23 @@ const routes: Routes = [
         path: 'cif/edit/:id',
         loadComponent: () => import('./demo/cif/components/cif-edit/cif-edit.component')
           .then(m => m.CifEditComponent)
+      },
+      {
+        path: 'current-account/account-create',
+        loadComponent: () => import('./demo/current-account/components/account-create/account-create.component')
+          .then(m => m.AccountCreateComponent)
+      },
+      {
+        path: 'current-account/account-list',
+        loadComponent: () => import('./demo/current-account/components/account-list/account-list.component')
+          .then(m => m.AccountListComponent)
+      },
+      {
+        path: 'loan/create',
+        loadComponent: () => import('./demo/loan/components/loan-create/loan-create.component')
+          .then(m => m.LoanCreateComponent)
       }
+      
 
     ]
   },
