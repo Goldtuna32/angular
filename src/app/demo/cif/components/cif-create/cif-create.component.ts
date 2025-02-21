@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CifService } from '../../services/cif.service';
 import { BranchService } from 'src/app/demo/branch/services/branch.service';
@@ -11,7 +11,7 @@ import { CommonModule } from '@angular/common';
   templateUrl: './cif-create.component.html',
   styleUrl: './cif-create.component.scss'
 })
-export class CifCreateComponent {
+export class CifCreateComponent implements OnInit {
   cifForm!: FormGroup;
   branches: any[] = [];  // Stores Branch List
   nrcFormats: any[] = []; // Stores NRC Format Data
@@ -57,7 +57,18 @@ export class CifCreateComponent {
 
   // ✅ Handle NRC Prefix Change
   onNrcPrefixChange(event: any) {
-    this.selectedNrcPrefix = event.target.value;
+    const selectedCode = (event.target as HTMLSelectElement).value;
+  const selectedNrc = this.nrcFormats.find(nrc => nrc.nrc_code === selectedCode);
+
+  if (selectedNrc) {
+    const fullPrefix = `${selectedNrc.nrc_code}/${selectedNrc.name_en}`;
+    console.log("Selected NRC Prefix:", fullPrefix); // ✅ Debugging log
+
+    // ✅ Ensure the form control is updated
+    this.cifForm.patchValue({ nrcPrefix: fullPrefix });
+  } else {
+    console.error("NRC Prefix not found!");
+  }
   }
 
 
@@ -72,9 +83,16 @@ export class CifCreateComponent {
       alert('Please fill in all required fields!');
       return;
     }
+    console.log("✅ Form Values:", this.cifForm.value);
 
-    const fullNrc = this.selectedNrcPrefix + "/" + this.cifForm.value.nrcNumber;
-
+    const nrcPrefix = this.cifForm.value.nrcPrefix;
+    if (!nrcPrefix || nrcPrefix === 'undefined') {
+      alert("❌ NRC Prefix is missing! Please select an NRC.");
+      return;
+    }
+  
+    const fullNrc = `${nrcPrefix}/${this.cifForm.value.nrcNumber}`;
+    
     const formData = new FormData();
     formData.append('name', this.cifForm.value.name);
     formData.append('nrcNumber', fullNrc);
@@ -87,6 +105,8 @@ export class CifCreateComponent {
     formData.append('occupation', this.cifForm.value.occupation);
     formData.append('incomeSource', this.cifForm.value.incomeSource);
     formData.append('branchId', this.cifForm.value.branchId);
+
+    console.log('Form Data:', formData);
     
 
     if (this.frontNrcFile) {

@@ -7,6 +7,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { CifEditComponent } from '../cif-edit/cif-edit.component';
+import { MatDialog } from '@angular/material/dialog';
  
 export interface CIF {
   id: number;
@@ -19,6 +21,7 @@ export interface CIF {
 
 @Component({
   selector: 'app-cif-list',
+  standalone: true,
   imports: [ CommonModule, MatTableModule, MatPaginatorModule, MatSortModule, MatIconModule, MatProgressSpinnerModule ],
   templateUrl: './cif-list.component.html',
   styleUrl: './cif-list.component.scss'
@@ -33,7 +36,7 @@ export class CifListComponent implements OnInit{
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  constructor(private cifService: CifService, private router: Router) {}
+  constructor(private cifService: CifService, private router: Router, private dialog: MatDialog) {}
 
   ngOnInit(): void {
     this.loadCIFs();
@@ -60,10 +63,34 @@ export class CifListComponent implements OnInit{
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
-  editCIF(id: number) {
-    this.router.navigate(['/cifs/edit', id]);
+  editCIF(cif: CIF) {
+    const dialogRef = this.dialog.open(CifEditComponent, {
+      width: '400px',
+      data: { ...cif } // Pass a copy to avoid modifying the original object before saving
+    });
+  
+    dialogRef.afterClosed().subscribe(updatedCif => {
+      if (updatedCif) {
+        // Send update request to the backend
+        this.cifService.updateCIF(updatedCif).subscribe({
+          next: () => {
+            // Update the local data after successful update
+            const index = this.dataSource.data.findIndex(item => item.id === updatedCif.id);
+            if (index !== -1) {
+              this.dataSource.data[index] = updatedCif;
+              this.dataSource._updateChangeSubscription(); // Refresh table
+            }
+            alert('CIF updated successfully!');
+          },
+          error: (error) => {
+            alert('Failed to update CIF.');
+            console.error('Error updating CIF:', error);
+          }
+        });
+      }
+    });
   }
-
+  
   deleteCIF(id: number) {
     if (confirm('Are you sure you want to delete this CIF?')) {
       this.cifService.deleteCIF(id).subscribe({
