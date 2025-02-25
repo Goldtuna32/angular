@@ -8,6 +8,7 @@ import { MatSort } from '@angular/material/sort';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTableModule } from '@angular/material/table';
 import { MatIcon } from '@angular/material/icon';
+import { Branch } from '../../models/branch.model';
  
 @Component({
   selector: 'app-branch-list',
@@ -24,7 +25,9 @@ export class BranchListComponent {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  constructor(private branchService: BranchService, private router: Router, private snackBar: MatSnackBar) {}
+  selectedBranch: any | null = null; // ✅ Store selected branch
+
+  constructor(private branchService: BranchService, private snackBar: MatSnackBar) {}
 
   ngOnInit(): void {
     this.loadBranches();
@@ -46,27 +49,12 @@ export class BranchListComponent {
     });
   }
 
-  editBranch(id: number) {
-    this.router.navigate(['/branches/edit', id]);
+  viewDetails(branch: any) {
+    this.selectedBranch = branch;
   }
 
-  deleteBranch(id: number) {
-    if (confirm('Are you sure you want to delete this branch?')) {
-      this.branchService.deleteBranch(id).subscribe({
-        next: () => {
-          this.snackBar.open('Branch deleted successfully.', 'Close', { duration: 3000 });
-          this.loadBranches();
-        },
-        error: (error) => {
-          this.snackBar.open('Failed to delete branch.', 'Close', { duration: 3000 });
-          console.error('Error deleting branch:', error);
-        }
-      });
-    }
-  }
-
-  viewDetails(id: number) {
-    this.router.navigate(['/branches/details', id]);
+  closeDetails() {
+    this.selectedBranch = null;
   }
 
   applyFilter(event: Event) {

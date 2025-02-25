@@ -31,8 +31,9 @@ export class CifCreateComponent implements OnInit {
   ngOnInit(): void {
     this.cifForm = this.fb.group({
       name: ['', Validators.required],
+      nrcPrefix: ['', Validators.required], 
       nrcNumber: ['', Validators.required],
-      dob: ['', Validators.required],
+      dob: ['', [Validators.required, this.minimumAgeValidator]], 
       gender: ['', Validators.required],
       phoneNumber: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
@@ -56,27 +57,27 @@ export class CifCreateComponent implements OnInit {
     });
   }
 
-  // ✅ Handle NRC Prefix Change
   onNrcPrefixChange(event: any) {
     const selectedCode = (event.target as HTMLSelectElement).value;
-  console.log("🔍 Selected NRC Code:", selectedCode); // Debugging
-
-  const selectedNrc = this.nrcFormats.find(nrc => nrc.nrc_code === selectedCode);
-
-  if (selectedNrc) {
-    const fullPrefix = `${selectedNrc.nrc_code}/${selectedNrc.name_en}`;
-    
-    console.log("✅ Full NRC Prefix:", fullPrefix); // Debugging log
-
-    // ✅ FORCE update the form
-    this.cifForm.patchValue({ nrcPrefix: fullPrefix });
-
-    // ✅ Debug: Check if the form actually updates
-    console.log("🚀 Updated Form Value After Selecting NRC:", this.cifForm.value);
-  } else {
-    console.error("❌ NRC Prefix not found!");
+    console.log("🔍 Selected NRC Code:", selectedCode); // Debugging
+  
+    const selectedNrc = this.nrcFormats.find(nrc => nrc.nrc_code === selectedCode);
+  
+    if (selectedNrc) {
+      const fullPrefix = `${selectedNrc.nrc_code}/${selectedNrc.name_en}(N)`;
+  
+      console.log("✅ Full NRC Prefix:", fullPrefix); // Debugging log
+  
+      // ✅ Update the form
+      this.cifForm.get('nrcPrefix')?.setValue(fullPrefix);  
+  
+      // ✅ Debug: Check if the form actually updates
+      console.log("🚀 Updated Form Value After Selecting NRC:", this.cifForm.value);
+    } else {
+      console.error("❌ NRC Prefix not found!");
+    }
   }
-  }
+  
 
 
   // ✅ Validate Form
@@ -85,31 +86,33 @@ export class CifCreateComponent implements OnInit {
   }
 
   minimumAgeValidator(control: any) {
-    if (!control.value) return null;
-
+    if (!control.value) return null; // ✅ If no date selected, don't show error
+  
     const birthDate = new Date(control.value);
     const today = new Date();
-    const age = today.getFullYear() - birthDate.getFullYear();
+    let age = today.getFullYear() - birthDate.getFullYear();
     const monthDiff = today.getMonth() - birthDate.getMonth();
     const dayDiff = today.getDate() - birthDate.getDate();
-
-    // If the user hasn't had their birthday yet this year, subtract 1 from age
+  
+    // ✅ Adjust age if birthday hasn't happened yet this year
     if (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)) {
-      return { underage: true };
+      age--;
     }
-
-    return age >= 18 ? null : { underage: true };
-  }
-
-  // ✅ Check Age on Input Change
+  
+    return age >= 18 ? null : { underage: true }; // ✅ Correct return value
+  }  
+  
   checkAge() {
     const dobControl = this.cifForm.get('dob');
-    if (dobControl?.invalid && dobControl?.errors?.['underage']) {
-      this.errorMessage = 'User must be at least 18 years old.';
+    console.log("🛠️ DOB Control Errors:", dobControl?.errors); // ✅ Debugging
+  
+    if (dobControl?.errors?.['underage']) { 
+      this.errorMessage = '❌ User must be at least 18 years old.';
     } else {
       this.errorMessage = '';
     }
   }
+  
 
 
   onSubmit() {

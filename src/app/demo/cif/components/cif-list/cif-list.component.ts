@@ -11,21 +11,32 @@ import { CifEditComponent } from '../cif-edit/cif-edit.component';
 import { MatDialog } from '@angular/material/dialog';
 import { CurrentAccountComponent } from 'src/app/demo/current-account/components/current-account/current-account.component';
 import { CurrentAccountService } from 'src/app/demo/current-account/services/current-account.service';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { CifDetailModalComponent } from '../cif-detail-modal/cif-detail-modal.component';
  
 export interface CIF {
   id: number;
   name: string;
   nrcNumber: string;
-  dob: string;
+  dob: string; // Use string because JSON from API returns it as text
+  gender: string;
   phoneNumber: string;
   email: string;
+  address: string;
+  maritalStatus: string;
+  occupation: string;
+  incomeSource: string;
+  createdAt: string;
+  branchId: number;
   hasCurrentAccount: boolean;
+  fNrcPhotoUrl: string; // Cloudinary Front NRC Image
+  bNrcPhotoUrl: string;
 }
 
 @Component({
   selector: 'app-cif-list',
   standalone: true,
-  imports: [ CommonModule, MatTableModule, MatPaginatorModule, MatSortModule, MatIconModule, MatProgressSpinnerModule ],
+  imports: [ CommonModule, MatTableModule, MatPaginatorModule, MatSortModule, MatIconModule, MatProgressSpinnerModule, MatTooltipModule ],
   templateUrl: './cif-list.component.html',
   styleUrl: './cif-list.component.scss'
 })
@@ -48,6 +59,13 @@ export class CifListComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.loadCIFs();
+  }
+
+  openCifDetailDialog(cif: CIF) {
+    this.dialog.open(CifDetailModalComponent, {
+      width: '600px',
+      data: cif
+    });
   }
 
   ngAfterViewInit(): void {

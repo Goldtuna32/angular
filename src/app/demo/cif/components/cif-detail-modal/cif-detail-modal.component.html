@@ -1,0 +1,59 @@
+<div class="p-6 bg-white rounded-lg shadow-lg max-w-2xl">
+    <h2 class="text-2xl font-semibold text-gray-700 mb-4">CIF Details</h2>
+  
+    <div class="space-y-4">
+      <p><strong>Name:</strong> {{ cif.name }}</p>
+      <p><strong>NRC Number:</strong> {{ cif.nrcNumber }}</p>
+      <p><strong>Date of Birth:</strong> {{ cif.dob | date: 'longDate' }}</p>
+      <p><strong>Gender:</strong> {{ cif.gender }}</p>
+      <p><strong>Phone:</strong> {{ cif.phoneNumber }}</p>
+      <p><strong>Email:</strong> {{ cif.email }}</p>
+      <p><strong>Address:</strong> {{ cif.address }}</p>
+      <p><strong>Marital Status:</strong> {{ cif.maritalStatus }}</p>
+      <p><strong>Occupation:</strong> {{ cif.occupation }}</p>
+      <p><strong>Income Source:</strong> {{ cif.incomeSource }}</p>
+      <p><strong>Created At:</strong> {{ cif.createdAt | date: 'long' }}</p>
+      <p><strong>Branch ID:</strong> {{ cif.branchId }}</p>
+
+
+      <!-- ✅ Fix ngClass Issue -->
+      <p><strong>Has Current Account:</strong> 
+        <span [ngClass]="cif.hasCurrentAccount ? 'text-green-500 font-semibold' : 'text-red-500 font-semibold'">
+          {{ cif.hasCurrentAccount ? 'Yes' : 'No' }}
+        </span>
+      </p>
+  
+      <!-- NRC Images -->
+      <div class="flex space-x-4 mt-4">
+        <div class="flex space-x-4 mt-4">
+            <!-- Front NRC Image -->
+            <div *ngIf="cif.fNrcPhotoUrl" class="text-center">
+              <p class="font-semibold">Front NRC</p>
+              <p-image [src]="cif.fNrcPhotoUrl" 
+                       alt="Front NRC" 
+                       styleClass="w-[225px] h-[276px] rounded shadow-lg" 
+                       [preview]="true">
+              </p-image>
+            </div>
+          
+            <!-- Back NRC Image -->
+            <div *ngIf="cif.bNrcPhotoUrl" class="text-center">
+              <p class="font-semibold">Back NRC</p>
+              <p-image [src]="cif.bNrcPhotoUrl" 
+                       alt="Back NRC" 
+                       styleClass="w-[225px] h-[276px] rounded shadow-lg" 
+                       [preview]="true">
+              </p-image>
+            </div>
+          </div>
+          
+    </div>
+  
+    <div class="mt-6 flex justify-end">
+      <button class="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-700" (click)="closeDialog()">
+        Close
+      </button>
+    </div>
+    
+  </div>
+  

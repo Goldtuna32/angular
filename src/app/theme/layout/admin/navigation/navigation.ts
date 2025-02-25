@@ -60,43 +60,51 @@ export const NavigationItems: NavigationItem[] = [
     id: 'CIF',
     title: 'CIF',
     type: 'group',
-    icon: 'feather icon-home', // 🏢 Represents a branch
+    icon: 'icon-group',
     children: [
       {
-        id: 'create branch',
-        title: 'Create CIF',
-        type: 'item',
-        url: '/cif/create',
-        icon: 'feather icon-plus' // ➕ Indicates adding a new branch
-      },
-      {
-        id: 'view branch',
-        title: 'All CIf',
-        type: 'item',
-        url: '/cif/list',
-        icon: 'feather icon-list' // 📋 Represents a list of branches
+        id: 'Create CIF',
+        title: 'CIF',
+        type: 'collapse',
+        icon: 'feather icon-box',
+        children: [
+          {
+            id: 'CIf Account List',
+            title: 'CIF-Account List',
+            type: 'item',
+            url: '/cif/list',
+            icon: 'feather icon-list'
+          },
+          {
+            id: 'Create CIF Account',
+            title: 'Create CIF Account',
+            type: 'item',
+            url: '/cif/create',
+            icon: 'feather icon-plus'
+          },
+        ]
       }
     ]
   },
   {
-    id: 'Current Account',
-    title: 'Current Account',
+    id: 'Current-Account',
+    title: 'Current-Account',
     type: 'group',
-    icon: 'feather icon-home', // 🏢 Represents a branch
+    icon: 'icon-group',
     children: [
       {
-        id: 'create account',
-        title: 'Create account',
-        type: 'item',
-        url: '/current-account/account-create',
-        icon: 'feather icon-plus' // ➕ Indicates adding a new branch
-      },
-      {
-        id: 'view current account',
-        title: 'All Current Account',
-        type: 'item',
-        url: '/current-account/list',
-        icon: 'feather icon-list' // 📋 Represents a list of branches
+        id: 'Current-Account List',
+        title: 'Current-Account',
+        type: 'collapse',
+        icon: 'feather icon-box',
+        children: [
+          {
+            id: 'badges',
+            title: 'Current-Account List',
+            type: 'item',
+            url: '/current-account/list'
+          }
+        ]
       }
     ]
   },

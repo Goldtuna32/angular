@@ -32,10 +32,10 @@
   <label class="form-label">Date of Birth</label>
   <input type="date" class="form-control" formControlName="dob" (change)="checkAge()">
   
-  <!-- Show Error if User is Under 18 -->
-  <div *ngIf="errorMessage" class="text-danger mt-1">
-    {{ errorMessage }}
+  <div *ngIf="cifForm.get('dob')?.errors?.['underage']" class="text-danger">
+    ❌ User must be at least 18 years old.
   </div>
+  
 </div>
 
   

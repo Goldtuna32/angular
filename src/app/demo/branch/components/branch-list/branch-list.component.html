@@ -4,12 +4,6 @@
       <h4 class="text-lg font-semibold">Branch List</h4>
     </div>
     <div class="p-6">
-      
-      <!-- Show loading message -->
-      <div *ngIf="loading" class="text-center text-gray-600">
-        <p>Loading branches...</p>
-      </div>
-
       <!-- Show error message if loading fails -->
       <div *ngIf="errorMessage" class="bg-red-500 text-white p-3 rounded mb-3">
         {{ errorMessage }}
@@ -17,81 +11,60 @@
 
       <!-- Search Input -->
       <div class="mb-4">
-        <input matInput (keyup)="applyFilter($event)" placeholder="Search branches..." 
-          class="search-box w-full border rounded-md p-2 shadow-sm focus:ring focus:ring-blue-300">
+        <input (keyup)="applyFilter($event)" placeholder="Search branches..." 
+          class="w-full border rounded-md p-2 shadow-sm focus:ring focus:ring-blue-300">
       </div>
 
-      <!-- Angular Material Data Table -->
-      <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8 border-collapse w-full border border-gray-200">
-        
-        <!-- Branch Code Column -->
+      <!-- Table -->
+      <table mat-table [dataSource]="dataSource" matSort class="w-full border border-gray-200">
         <ng-container matColumnDef="branchCode">
           <th mat-header-cell *matHeaderCellDef mat-sort-header class="border p-3 bg-gray-100">Branch Code</th>
           <td mat-cell *matCellDef="let branch" class="border p-3">{{ branch.branchCode }}</td>
         </ng-container>
 
-        <!-- Branch Name Column -->
         <ng-container matColumnDef="branchName">
           <th mat-header-cell *matHeaderCellDef mat-sort-header class="border p-3 bg-gray-100">Branch Name</th>
           <td mat-cell *matCellDef="let branch" class="border p-3">{{ branch.branchName }}</td>
         </ng-container>
 
-        <!-- Phone Number Column -->
         <ng-container matColumnDef="phoneNumber">
           <th mat-header-cell *matHeaderCellDef mat-sort-header class="border p-3 bg-gray-100">Phone</th>
           <td mat-cell *matCellDef="let branch" class="border p-3">{{ branch.phoneNumber }}</td>
         </ng-container>
 
-        <!-- Email Column -->
         <ng-container matColumnDef="email">
           <th mat-header-cell *matHeaderCellDef mat-sort-header class="border p-3 bg-gray-100">Email</th>
           <td mat-cell *matCellDef="let branch" class="border p-3">{{ branch.email }}</td>
         </ng-container>
 
-        <!-- Address Column -->
         <ng-container matColumnDef="address">
           <th mat-header-cell *matHeaderCellDef mat-sort-header class="border p-3 bg-gray-100">Address</th>
           <td mat-cell *matCellDef="let branch" class="border p-3">
-            {{ branch.region }}, {{ branch.district }}, {{ branch.township }}
+            {{ branch.address?.region || 'N/A' }}, 
+            {{ branch.address?.district || 'N/A' }}, 
+            {{ branch.address?.township || 'N/A' }}
           </td>
         </ng-container>
-
-        <!-- Status Column -->
+        
+        
         <ng-container matColumnDef="status">
           <th mat-header-cell *matHeaderCellDef mat-sort-header class="border p-3 bg-gray-100">Status</th>
           <td mat-cell *matCellDef="let branch" class="border p-3">
-            <span class="status-active" *ngIf="branch.status === 1">Active</span>
-            <span class="status-inactive" *ngIf="branch.status === 0">Inactive</span>
+            {{ branch.status === 1 ? 'Active' : 'Inactive' }}
           </td>
         </ng-container>
+        
 
-        <!-- Actions Column -->
         <ng-container matColumnDef="actions">
           <th mat-header-cell *matHeaderCellDef class="border p-3 bg-gray-100">Actions</th>
           <td mat-cell *matCellDef="let branch" class="border p-3 flex gap-2">
-            
-            <!-- Edit Button -->
-            <button class="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-700" 
-                    matTooltip="Edit Branch" (click)="editBranch(branch.id)">
-              <i class="bi bi-pencil"></i> Edit
-            </button>            
-
-            <!-- Delete Button -->
-            <button class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-700"
-                    matTooltip="Delete Branch" (click)="deleteBranch(branch.id)">
-              <i class="bi bi-trash"></i> Delete
-            </button>
-
-            <!-- View Details Button -->
             <button class="bg-teal-500 text-white px-3 py-1 rounded hover:bg-teal-700"
-                    matTooltip="View Details" (click)="viewDetails(branch.id)">
+                    matTooltip="View Details" (click)="viewDetails(branch)">
               <i class="bi bi-eye"></i> View
             </button>
-
           </td>
         </ng-container>
 
-        <!-- Header and Row Definitions -->
         <tr mat-header-row *matHeaderRowDef="displayedColumns" class="bg-gray-100"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
       </table>
@@ -100,4 +73,31 @@
       <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
     </div>
   </div>
+
+  <!-- ✅ Branch Details Box -->
+<div *ngIf="selectedBranch" class="fixed top-0 left-0 w-full h-full flex justify-center items-center bg-gray-900 bg-opacity-50">
+  <div class="bg-white p-6 rounded-lg shadow-lg w-1/2">
+    <div class="flex justify-between items-center">
+      <h3 class="text-lg font-semibold">Branch Details</h3>
+      <button class="text-red-500 text-lg" (click)="closeDetails()">✖</button>
+    </div>
+    <div class="mt-4">
+      <p><strong>Branch Code:</strong> {{ selectedBranch.branchCode }}</p>
+      <p><strong>Branch Name:</strong> {{ selectedBranch.branchName }}</p>
+      <p><strong>Phone:</strong> {{ selectedBranch.phoneNumber }}</p>
+      <p><strong>Email:</strong> {{ selectedBranch.email }}</p>
+      
+      <!-- Show Address in Details Box -->
+      <p><strong>Address:</strong> {{ selectedBranch.address?.region || 'N/A' }}, {{ selectedBranch.address?.district || 'N/A' }}, {{ selectedBranch.address?.township || 'N/A' }}</p>
+
+      <p><strong>Status:</strong> <span [ngClass]="{'text-green-600': selectedBranch.status === 1, 'text-red-600': selectedBranch.status === 0}">
+        {{ selectedBranch.status === 1 ? 'Active' : 'Inactive' }}
+      </span></p>
+    </div>
+    <div class="mt-4 flex justify-end">
+      <button class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-700" (click)="closeDetails()">Close</button>
+    </div>
+  </div>
+</div>
+
 </div>
