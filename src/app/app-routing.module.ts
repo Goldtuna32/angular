@@ -66,19 +66,14 @@ const routes: Routes = [
           .then(m => m.CifEditComponent)
       },
       {
-        path: 'current-account/account-create',
-        loadComponent: () => import('./demo/current-account/components/account-create/account-create.component')
-          .then(m => m.AccountCreateComponent)
-      },
-      {
-        path: 'current-account/account-list',
-        loadComponent: () => import('./demo/current-account/components/account-list/account-list.component')
-          .then(m => m.AccountListComponent)
-      },
-      {
         path: 'loan/create',
         loadComponent: () => import('./demo/loan/components/loan-create/loan-create.component')
           .then(m => m.LoanCreateComponent)
+      },
+      {
+        path: 'current-account/list',
+        loadComponent: () => import('./demo/current-account/components/current-account-list/current-account-list.component')
+          .then(m => m.CurrentAccountListComponent)
       }
       
 

@@ -1,9 +1,9 @@
-<div class="container mt-4">
-  <div class="card shadow-lg">
-    <div class="card-header bg-primary text-white">
-      <h4 class="mb-0">CIF List</h4>
+<div class="container mx-auto mt-4">
+  <div class="shadow-lg rounded-lg overflow-hidden bg-white">
+    <div class="bg-blue-600 text-white p-4">
+      <h4 class="text-lg font-semibold">CIF List</h4>
     </div>
-    <div class="card-body">
+    <div class="p-6">
       
       <!-- Show loading spinner -->
       <div *ngIf="loading" class="text-center">
@@ -11,77 +11,84 @@
       </div>
 
       <!-- Show error message if loading fails -->
-      <div *ngIf="errorMessage" class="alert alert-danger">
+      <div *ngIf="errorMessage" class="bg-red-500 text-white p-3 rounded mb-3">
         {{ errorMessage }}
       </div>
 
       <!-- Search Input -->
-      <div class="mb-3">
-        <input matInput (keyup)="applyFilter($event)" placeholder="Search..." class="form-control">
+      <div class="mb-4">
+        <input matInput (keyup)="applyFilter($event)" placeholder="Search..."
+          class="w-full border rounded-md p-2 shadow-sm focus:ring focus:ring-blue-300">
       </div>
 
       <!-- Angular Material Data Table -->
-      <table mat-table [dataSource]="dataSource" matSort class="table table-striped">
+      <table mat-table [dataSource]="dataSource" matSort class="w-full border-collapse border border-gray-200">
         
         <!-- ID Column -->
         <ng-container matColumnDef="id">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
-          <td mat-cell *matCellDef="let row">{{ row.id }}</td>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="border p-2">ID</th>
+          <td mat-cell *matCellDef="let row" class="border p-2">{{ row.id }}</td>
         </ng-container>
 
         <!-- Name Column -->
         <ng-container matColumnDef="name">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
-          <td mat-cell *matCellDef="let row">{{ row.name }}</td>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="border p-2">Name</th>
+          <td mat-cell *matCellDef="let row" class="border p-2">{{ row.name }}</td>
         </ng-container>
 
         <!-- NRC Number Column -->
         <ng-container matColumnDef="nrcNumber">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>NRC Number</th>
-          <td mat-cell *matCellDef="let row">{{ row.nrcNumber }}</td>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="border p-2">NRC Number</th>
+          <td mat-cell *matCellDef="let row" class="border p-2">{{ row.nrcNumber }}</td>
         </ng-container>
 
         <!-- DOB Column -->
         <ng-container matColumnDef="dob">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>DOB</th>
-          <td mat-cell *matCellDef="let row">{{ row.dob | date: 'shortDate' }}</td>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="border p-2">DOB</th>
+          <td mat-cell *matCellDef="let row" class="border p-2">{{ row.dob | date: 'shortDate' }}</td>
         </ng-container>
 
         <!-- Phone Column -->
         <ng-container matColumnDef="phoneNumber">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>Phone</th>
-          <td mat-cell *matCellDef="let row">{{ row.phoneNumber }}</td>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="border p-2">Phone</th>
+          <td mat-cell *matCellDef="let row" class="border p-2">{{ row.phoneNumber }}</td>
         </ng-container>
 
         <!-- Email Column -->
         <ng-container matColumnDef="email">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>Email</th>
-          <td mat-cell *matCellDef="let row">{{ row.email }}</td>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="border p-2">Email</th>
+          <td mat-cell *matCellDef="let row" class="border p-2">{{ row.email }}</td>
         </ng-container>
 
         <!-- Actions Column -->
         <ng-container matColumnDef="actions">
-          <th mat-header-cell *matHeaderCellDef>Actions</th>
-          <td mat-cell *matCellDef="let row">
-            <button class="btn btn-primary btn-sm me-2" (click)="editCIF(row)" matTooltip="Edit">
+          <th mat-header-cell *matHeaderCellDef class="border p-2">Actions</th>
+          <td mat-cell *matCellDef="let row" class="border p-2 flex gap-2">
+            <button class="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-700" 
+                    (click)="editCIF(row)" matTooltip="Edit">
               <i class="bi bi-pencil"></i> Edit
             </button>            
-            <button class="btn btn-danger btn-sm" (click)="deleteCIF(row.id)" matTooltip="Delete">
+            <button class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-700"
+                    (click)="deleteCIF(row.id)" matTooltip="Delete">
               <i class="bi bi-trash"></i> Delete
+            </button>
+            <button class="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-700"
+                    (click)="openCurrentAccountDialog(row)"
+                    [disabled]="row.hasCurrentAccount"
+                    matTooltip="Create Current Account">
+              <i class="bi bi-plus-circle"></i> Create Account
             </button>
           </td>
         </ng-container>
 
         <!-- Header and Row Definitions -->
-        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns" class="bg-gray-100"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
       </table>
 
       <!-- Paginator -->
       <mat-paginator [pageSize]="10" showFirstLastButtons></mat-paginator>
 
-
-      
     </div>
   </div>
 </div>

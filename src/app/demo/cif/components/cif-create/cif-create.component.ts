@@ -18,6 +18,7 @@ export class CifCreateComponent implements OnInit {
   selectedNrcPrefix = ''; // Selected NRC Prefix
   frontNrcFile: File | null = null;
   backNrcFile: File | null = null;
+  errorMessage: string = '';
 
 
   constructor(
@@ -58,16 +59,22 @@ export class CifCreateComponent implements OnInit {
   // ✅ Handle NRC Prefix Change
   onNrcPrefixChange(event: any) {
     const selectedCode = (event.target as HTMLSelectElement).value;
+  console.log("🔍 Selected NRC Code:", selectedCode); // Debugging
+
   const selectedNrc = this.nrcFormats.find(nrc => nrc.nrc_code === selectedCode);
 
   if (selectedNrc) {
     const fullPrefix = `${selectedNrc.nrc_code}/${selectedNrc.name_en}`;
-    console.log("Selected NRC Prefix:", fullPrefix); // ✅ Debugging log
+    
+    console.log("✅ Full NRC Prefix:", fullPrefix); // Debugging log
 
-    // ✅ Ensure the form control is updated
+    // ✅ FORCE update the form
     this.cifForm.patchValue({ nrcPrefix: fullPrefix });
+
+    // ✅ Debug: Check if the form actually updates
+    console.log("🚀 Updated Form Value After Selecting NRC:", this.cifForm.value);
   } else {
-    console.error("NRC Prefix not found!");
+    console.error("❌ NRC Prefix not found!");
   }
   }
 
@@ -77,22 +84,54 @@ export class CifCreateComponent implements OnInit {
     return this.cifForm.valid && this.nrcFormats.length > 0 && this.branches.length > 0;
   }
 
+  minimumAgeValidator(control: any) {
+    if (!control.value) return null;
+
+    const birthDate = new Date(control.value);
+    const today = new Date();
+    const age = today.getFullYear() - birthDate.getFullYear();
+    const monthDiff = today.getMonth() - birthDate.getMonth();
+    const dayDiff = today.getDate() - birthDate.getDate();
+
+    // If the user hasn't had their birthday yet this year, subtract 1 from age
+    if (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)) {
+      return { underage: true };
+    }
+
+    return age >= 18 ? null : { underage: true };
+  }
+
+  // ✅ Check Age on Input Change
+  checkAge() {
+    const dobControl = this.cifForm.get('dob');
+    if (dobControl?.invalid && dobControl?.errors?.['underage']) {
+      this.errorMessage = 'User must be at least 18 years old.';
+    } else {
+      this.errorMessage = '';
+    }
+  }
+
 
   onSubmit() {
     if (this.cifForm.invalid) {
       alert('Please fill in all required fields!');
       return;
     }
-    console.log("✅ Form Values:", this.cifForm.value);
-
-    const nrcPrefix = this.cifForm.value.nrcPrefix;
+    let nrcPrefix = this.cifForm.get('nrcPrefix')?.value;
+    const nrcNumber = this.cifForm.value.nrcNumber;
+  
     if (!nrcPrefix || nrcPrefix === 'undefined') {
       alert("❌ NRC Prefix is missing! Please select an NRC.");
+      console.error("❌ NRC Prefix is missing from form!");
       return;
     }
   
-    const fullNrc = `${nrcPrefix}/${this.cifForm.value.nrcNumber}`;
-    
+    // ✅ Ensure the form has the correct value
+    this.cifForm.patchValue({ nrcPrefix });
+  
+    // ✅ Create full NRC number
+    const fullNrc = `${nrcPrefix}/${nrcNumber}`;
+    console.log("✅ Full NRC to Submit:", fullNrc);
     const formData = new FormData();
     formData.append('name', this.cifForm.value.name);
     formData.append('nrcNumber', fullNrc);

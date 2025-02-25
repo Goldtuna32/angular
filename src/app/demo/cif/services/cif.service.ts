@@ -18,7 +18,7 @@ export class CifService {
   updateCIF(cif: CIF) {
     return this.http.put(`${this.baseUrl}/${cif.id}`, cif);
   }
-  
+
 
   // Delete CIF
   deleteCIF(id: number): Observable<any> {

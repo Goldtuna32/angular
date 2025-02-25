@@ -79,6 +79,28 @@ export const NavigationItems: NavigationItem[] = [
     ]
   },
   {
+    id: 'Current Account',
+    title: 'Current Account',
+    type: 'group',
+    icon: 'feather icon-home', // 🏢 Represents a branch
+    children: [
+      {
+        id: 'create account',
+        title: 'Create account',
+        type: 'item',
+        url: '/current-account/account-create',
+        icon: 'feather icon-plus' // ➕ Indicates adding a new branch
+      },
+      {
+        id: 'view current account',
+        title: 'All Current Account',
+        type: 'item',
+        url: '/current-account/list',
+        icon: 'feather icon-list' // 📋 Represents a list of branches
+      }
+    ]
+  },
+  {
     id: 'Loan',
     title: 'Loan',
     type: 'group',
@@ -118,28 +140,6 @@ export const NavigationItems: NavigationItem[] = [
         title: 'All Saving Account',
         type: 'item',
         url: '/saving-account/account-list',
-        icon: 'feather icon-list' // 📋 Represents a list of branches
-      }
-    ]
-  },
-  {
-    id: 'Current Account',
-    title: 'Current Account',
-    type: 'group',
-    icon: 'feather icon-home', // 🏢 Represents a branch
-    children: [
-      {
-        id: 'create account',
-        title: 'Create account',
-        type: 'item',
-        url: '/current-account/account-create',
-        icon: 'feather icon-plus' // ➕ Indicates adding a new branch
-      },
-      {
-        id: 'view current account',
-        title: 'All Current Account',
-        type: 'item',
-        url: '/current-account/account-list',
         icon: 'feather icon-list' // 📋 Represents a list of branches
       }
     ]

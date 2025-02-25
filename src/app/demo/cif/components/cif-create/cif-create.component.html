@@ -28,10 +28,16 @@
           
   
           <!-- Date of Birth -->
-          <div class="mb-3">
-            <label class="form-label">Date of Birth</label>
-            <input type="date" class="form-control" formControlName="dob">
-          </div>
+<div class="mb-3">
+  <label class="form-label">Date of Birth</label>
+  <input type="date" class="form-control" formControlName="dob" (change)="checkAge()">
+  
+  <!-- Show Error if User is Under 18 -->
+  <div *ngIf="errorMessage" class="text-danger mt-1">
+    {{ errorMessage }}
+  </div>
+</div>
+
   
           <!-- Gender -->
           <div class="mb-3">
