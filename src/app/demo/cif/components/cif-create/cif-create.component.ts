@@ -58,23 +58,15 @@ export class CifCreateComponent implements OnInit {
   }
 
   onNrcPrefixChange(event: any) {
-    const selectedCode = (event.target as HTMLSelectElement).value;
-    console.log("🔍 Selected NRC Code:", selectedCode); // Debugging
-  
-    const selectedNrc = this.nrcFormats.find(nrc => nrc.nrc_code === selectedCode);
-  
-    if (selectedNrc) {
-      const fullPrefix = `${selectedNrc.nrc_code}/${selectedNrc.name_en}(N)`;
-  
-      console.log("✅ Full NRC Prefix:", fullPrefix); // Debugging log
-  
-      // ✅ Update the form
-      this.cifForm.get('nrcPrefix')?.setValue(fullPrefix);  
-  
-      // ✅ Debug: Check if the form actually updates
-      console.log("🚀 Updated Form Value After Selecting NRC:", this.cifForm.value);
+    const selectedValue = (event.target as HTMLSelectElement).value;
+    console.log("🔍 Selected NRC Value:", selectedValue); // Debugging
+
+    if (selectedValue) {
+      // The value already contains the full prefix format from the template
+      this.cifForm.get('nrcPrefix')?.setValue(selectedValue);
+      console.log("✅ Updated Form Value:", this.cifForm.value);
     } else {
-      console.error("❌ NRC Prefix not found!");
+      console.error("❌ No NRC value selected!");
     }
   }
   

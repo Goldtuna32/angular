@@ -38,21 +38,29 @@ export const NavigationItems: NavigationItem[] = [
     id: 'branch',
     title: 'Branch',
     type: 'group',
-    icon: 'feather icon-home', // 🏢 Represents a branch
+    icon: 'icon-group',
     children: [
       {
-        id: 'create branch',
-        title: 'Create Branch',
-        type: 'item',
-        url: '/branch/create',
-        icon: 'feather icon-plus' // ➕ Indicates adding a new branch
-      },
-      {
-        id: 'view branch',
-        title: 'All Branches',
-        type: 'item',
-        url: '/branch/list',
-        icon: 'feather icon-list' // 📋 Represents a list of branches
+        id: 'Branch',
+        title: 'Branch',
+        type: 'collapse',
+        icon: 'feather icon-box',
+        children: [
+          {
+            id: 'Branch Create',
+            title: 'Branch Create',
+            type: 'item',
+            url: '/branch/create',
+            icon: 'feather icon-plus'
+          },
+          {
+            id: 'Branch list',
+            title: 'Branch List',
+            type: 'item',
+            url: '/branch/list',
+            icon: 'feather icon-list'
+          },
+        ]
       }
     ]
   },
@@ -130,29 +138,6 @@ export const NavigationItems: NavigationItem[] = [
       }
     ]
   },
-  {
-    id: 'Saving Account',
-    title: 'Saving Account',
-    type: 'group',
-    icon: 'feather icon-home', // 🏢 Represents a branch
-    children: [
-      {
-        id: 'create account',
-        title: 'Create account',
-        type: 'item',
-        url: '/saving-account/account-create',
-        icon: 'feather icon-plus' // ➕ Indicates adding a new branch
-      },
-      {
-        id: 'view saving account',
-        title: 'All Saving Account',
-        type: 'item',
-        url: '/saving-account/account-list',
-        icon: 'feather icon-list' // 📋 Represents a list of branches
-      }
-    ]
-  }
-  ,
   {
     id: 'ui-component',
     title: 'Ui Component',

@@ -17,7 +17,7 @@
               <label class="form-label">NRC Prefix</label>
               <select class="form-select" formControlName="nrcPrefix" (change)="onNrcPrefixChange($event)">
                 <option value="" disabled>Select NRC</option>
-                <option *ngFor="let nrc of nrcFormats" [value]="nrc.nrc_code">{{ nrc.nrc_code }} - {{ nrc.name_en }}</option>
+                <option *ngFor="let nrc of nrcFormats" [value]="nrc.nrc_code + '/' + nrc.name_en + '(N)'">{{ nrc.nrc_code }} / {{ nrc.name_en }}</option>
               </select>
             </div>
             <div class="col-md-6">
