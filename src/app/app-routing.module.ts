@@ -1,10 +1,12 @@
 // Angular Import
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
- 
+
 // project import
 import { AdminComponent } from './theme/layout/admin/admin.component';
 import { GuestComponent } from './theme/layout/guest/guest.component';
+
+import { COLLATERAL_ROUTES } from './demo/collateral/collateral.routes';
 
 const routes: Routes = [
   {
@@ -55,12 +57,12 @@ const routes: Routes = [
         loadComponent: () => import('./demo/cif/components/cif-create/cif-create.component')
           .then(m => m.CifCreateComponent)
       },
-      { 
+      {
         path: 'cif/list',
         loadComponent: () => import('./demo/cif/components/cif-list/cif-list.component')
           .then(m => m.CifListComponent)
       },
-      { 
+      {
         path: 'cif/edit/:id',
         loadComponent: () => import('./demo/cif/components/cif-edit/cif-edit.component')
           .then(m => m.CifEditComponent)
@@ -74,8 +76,9 @@ const routes: Routes = [
         path: 'current-account/list',
         loadComponent: () => import('./demo/current-account/components/current-account-list/current-account-list.component')
           .then(m => m.CurrentAccountListComponent)
-      }
-      
+      },
+      { path: 'collateral', children: COLLATERAL_ROUTES },
+
 
     ]
   },
