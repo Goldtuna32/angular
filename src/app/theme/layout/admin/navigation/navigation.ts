@@ -117,6 +117,37 @@ export const NavigationItems: NavigationItem[] = [
     ]
   },
   {
+    id: 'collateral',
+    title: 'Collateral',
+    type: 'group',
+    icon: 'icon-group',
+    children: [
+      {
+        id: 'collateral-list',
+        title: 'Collateral-list',
+        type: 'collapse',
+        icon: 'feather icon-box',
+        children: [
+          {
+            id: 'Collaterallist',
+            title: 'Collaterallist',
+            type: 'item',
+            url: '/collateral',
+            icon: 'feather icon-list'
+          },
+          {
+            id: 'Collateral Add',
+            title: 'Collateral Add',
+            type: 'item',
+            url: '/collateral/add',
+            icon: 'feather icon-plus'
+          },
+        ]
+      }
+    ]
+  }
+  ,
+  {
     id: 'Loan',
     title: 'Loan',
     type: 'group',
