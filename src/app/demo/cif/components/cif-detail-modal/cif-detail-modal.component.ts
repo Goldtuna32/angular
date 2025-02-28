@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { ImageModule } from 'primeng/image'; 
+ 
 
 export interface CIF {
   id: number;
@@ -24,9 +24,9 @@ export interface CIF {
 
 @Component({
   selector: 'app-cif-detail-modal',
-  imports: [ CommonModule, ImageModule],
+  imports: [ CommonModule],
   templateUrl: './cif-detail-modal.component.html',
-  styleUrl: './cif-detail-modal.component.scss'
+  styleUrl: './cif-detail-modal.component.scss',
 })
 export class CifDetailModalComponent implements OnInit {
   constructor(
