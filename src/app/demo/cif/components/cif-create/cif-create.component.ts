@@ -19,6 +19,8 @@ export class CifCreateComponent implements OnInit {
   frontNrcFile: File | null = null;
   backNrcFile: File | null = null;
   errorMessage: string = '';
+  frontNrcPreview: string | null = null;
+  backNrcPreview: string | null = null;
 
 
   constructor(
@@ -58,23 +60,15 @@ export class CifCreateComponent implements OnInit {
   }
 
   onNrcPrefixChange(event: any) {
-    const selectedCode = (event.target as HTMLSelectElement).value;
-    console.log("🔍 Selected NRC Code:", selectedCode); // Debugging
-  
-    const selectedNrc = this.nrcFormats.find(nrc => nrc.nrc_code === selectedCode);
-  
-    if (selectedNrc) {
-      const fullPrefix = `${selectedNrc.nrc_code}/${selectedNrc.name_en}(N)`;
-  
-      console.log("✅ Full NRC Prefix:", fullPrefix); // Debugging log
-  
-      // ✅ Update the form
-      this.cifForm.get('nrcPrefix')?.setValue(fullPrefix);  
-  
-      // ✅ Debug: Check if the form actually updates
-      console.log("🚀 Updated Form Value After Selecting NRC:", this.cifForm.value);
+    const selectedValue = (event.target as HTMLSelectElement).value;
+    console.log("🔍 Selected NRC Value:", selectedValue); // Debugging
+
+    if (selectedValue) {
+      // The value already contains the full prefix format from the template
+      this.cifForm.get('nrcPrefix')?.setValue(selectedValue);
+      console.log("✅ Updated Form Value:", this.cifForm.value);
     } else {
-      console.error("❌ NRC Prefix not found!");
+      console.error("❌ No NRC value selected!");
     }
   }
   
@@ -152,10 +146,10 @@ export class CifCreateComponent implements OnInit {
     
 
     if (this.frontNrcFile) {
-      formData.append('frontNrc', this.frontNrcFile);
+      formData.append('fNrcPhotoUrl', this.frontNrcFile);
     }
     if (this.backNrcFile) {
-      formData.append('backNrc', this.backNrcFile);
+      formData.append('bNrcPhotoUrl', this.backNrcFile);
     }
 
 
@@ -175,11 +169,26 @@ export class CifCreateComponent implements OnInit {
   onFileChange(event: any, type: string) {
     const file = event.target.files[0];
     if (file) {
+      // Store the file for submission
       if (type === 'front') {
         this.frontNrcFile = file;
       } else if (type === 'back') {
         this.backNrcFile = file;
       }
+  
+      // Generate preview
+      const reader = new FileReader();
+      reader.onload = (e: ProgressEvent<FileReader>) => {
+        if (type === 'front') {
+          this.frontNrcPreview = e.target?.result as string;
+        } else if (type === 'back') {
+          this.backNrcPreview = e.target?.result as string;
+        }
+      };
+      reader.onerror = (error) => {
+        console.error('Error reading file:', error);
+      };
+      reader.readAsDataURL(file); // Convert file to base64 string for preview
     }
   }
 }

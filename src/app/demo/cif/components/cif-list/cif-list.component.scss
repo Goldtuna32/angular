@@ -25,5 +25,12 @@
         vertical-align: middle; // Center align cell content
       }
     }
+  }button[mat-icon-button] {
+    z-index: 10;
   }
+
+  .mat-menu-panel {
+    display: block !important;
+  }
+  
 }

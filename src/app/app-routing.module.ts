@@ -78,7 +78,12 @@ const routes: Routes = [
           .then(m => m.CurrentAccountListComponent)
       },
       { path: 'collateral', children: COLLATERAL_ROUTES },
-
+      
+      {
+        path: 'transaction',
+        loadComponent: () => import('./demo/transaction/components/transaction/transaction.component')
+         .then(m => m.TransactionComponent)
+      },
 
     ]
   },

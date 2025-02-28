@@ -2,6 +2,7 @@ import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { CifService } from '../../services/cif.service';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { MatMenuModule } from '@angular/material/menu';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -13,36 +14,19 @@ import { CurrentAccountComponent } from 'src/app/demo/current-account/components
 import { CurrentAccountService } from 'src/app/demo/current-account/services/current-account.service';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { CifDetailModalComponent } from '../cif-detail-modal/cif-detail-modal.component';
- 
-export interface CIF {
-  id: number;
-  name: string;
-  nrcNumber: string;
-  dob: string; // Use string because JSON from API returns it as text
-  gender: string;
-  phoneNumber: string;
-  email: string;
-  address: string;
-  maritalStatus: string;
-  occupation: string;
-  incomeSource: string;
-  createdAt: string;
-  branchId: number;
-  hasCurrentAccount: boolean;
-  fNrcPhotoUrl: string; // Cloudinary Front NRC Image
-  bNrcPhotoUrl: string;
-}
+import { CIF } from '../../models/cif.model';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-cif-list',
   standalone: true,
-  imports: [ CommonModule, MatTableModule, MatPaginatorModule, MatSortModule, MatIconModule, MatProgressSpinnerModule, MatTooltipModule ],
+  imports: [ CommonModule, MatTableModule, MatPaginatorModule, MatSortModule, MatIconModule, MatProgressSpinnerModule, MatTooltipModule, MatMenuModule, MatButtonModule],
   templateUrl: './cif-list.component.html',
   styleUrl: './cif-list.component.scss'
 })
 
 export class CifListComponent implements OnInit, AfterViewInit {
-  displayedColumns: string[] = ['id', 'name', 'nrcNumber', 'dob', 'phoneNumber', 'email', 'actions'];
+  displayedColumns: string[] = ['SerialNumber', 'name', 'nrcNumber', 'dob', 'phoneNumber', 'email', 'actions'];
   dataSource = new MatTableDataSource<CIF>([]);
   loading = true;
   errorMessage = '';
@@ -63,7 +47,11 @@ export class CifListComponent implements OnInit, AfterViewInit {
 
   openCifDetailDialog(cif: CIF) {
     this.dialog.open(CifDetailModalComponent, {
-      width: '600px',
+      width: '90%',
+      maxWidth: '900px',
+      height: 'auto',
+      maxHeight: '90vh',
+      panelClass: 'custom-dialog-container',
       data: cif
     });
   }
@@ -78,6 +66,7 @@ export class CifListComponent implements OnInit, AfterViewInit {
     this.cifService.getAllCIFs().subscribe({
       next: (data) => {
         this.dataSource.data = data;
+        
         
         // Manually loop through CIFs to check for current account status
         data.forEach((cif, index) => {
@@ -115,15 +104,31 @@ export class CifListComponent implements OnInit, AfterViewInit {
       width: '400px',
       data: { ...cif }
     });
-
-    dialogRef.afterClosed().subscribe(updatedCif => {
+  
+    dialogRef.afterClosed().subscribe((updatedCif: FormData) => {
       if (updatedCif) {
-        this.cifService.updateCIF(updatedCif).subscribe({
+        const id = updatedCif.get('id');
+        console.log('Received FormData from dialog:', updatedCif);
+        console.log('Extracted id from FormData:', id);
+  
+        if (!id || isNaN(Number(id))) {
+          console.error('Invalid ID from FormData:', id);
+          alert('Failed to update CIF: Invalid ID.');
+          return;
+        }
+  
+        const updatedCifData: any = {};
+        updatedCif.forEach((value, key) => {
+          updatedCifData[key] = value;
+        });
+        console.log('Converted FormData to object:', updatedCifData);
+  
+        this.cifService.updateCIF(Number(id), updatedCif).subscribe({
           next: () => {
-            const index = this.dataSource.data.findIndex(item => item.id === updatedCif.id);
+            const index = this.dataSource.data.findIndex(item => item.id === Number(id));
             if (index !== -1) {
-              this.dataSource.data[index] = updatedCif;
-              this.dataSource._updateChangeSubscription(); // Refresh table
+              this.dataSource.data[index] = updatedCifData;
+              this.dataSource._updateChangeSubscription();
             }
             alert('CIF updated successfully!');
           },
