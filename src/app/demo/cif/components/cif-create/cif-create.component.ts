@@ -19,6 +19,8 @@ export class CifCreateComponent implements OnInit {
   frontNrcFile: File | null = null;
   backNrcFile: File | null = null;
   errorMessage: string = '';
+  frontNrcPreview: string | null = null;
+  backNrcPreview: string | null = null;
 
 
   constructor(
@@ -167,11 +169,26 @@ export class CifCreateComponent implements OnInit {
   onFileChange(event: any, type: string) {
     const file = event.target.files[0];
     if (file) {
+      // Store the file for submission
       if (type === 'front') {
         this.frontNrcFile = file;
       } else if (type === 'back') {
         this.backNrcFile = file;
       }
+  
+      // Generate preview
+      const reader = new FileReader();
+      reader.onload = (e: ProgressEvent<FileReader>) => {
+        if (type === 'front') {
+          this.frontNrcPreview = e.target?.result as string;
+        } else if (type === 'back') {
+          this.backNrcPreview = e.target?.result as string;
+        }
+      };
+      reader.onerror = (error) => {
+        console.error('Error reading file:', error);
+      };
+      reader.readAsDataURL(file); // Convert file to base64 string for preview
     }
   }
 }

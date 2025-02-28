@@ -47,7 +47,11 @@ export class CifListComponent implements OnInit, AfterViewInit {
 
   openCifDetailDialog(cif: CIF) {
     this.dialog.open(CifDetailModalComponent, {
-      width: '600px',
+      width: '90%',
+      maxWidth: '900px',
+      height: 'auto',
+      maxHeight: '90vh',
+      panelClass: 'custom-dialog-container',
       data: cif
     });
   }
