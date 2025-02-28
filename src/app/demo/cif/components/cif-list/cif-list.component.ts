@@ -107,7 +107,6 @@ export class CifListComponent implements OnInit, AfterViewInit {
   
     dialogRef.afterClosed().subscribe((updatedCif: FormData) => {
       if (updatedCif) {
-        // Extract id from FormData
         const id = updatedCif.get('id');
         console.log('Received FormData from dialog:', updatedCif);
         console.log('Extracted id from FormData:', id);
@@ -118,21 +117,18 @@ export class CifListComponent implements OnInit, AfterViewInit {
           return;
         }
   
-        // Convert FormData to a plain object for the service (if needed)
         const updatedCifData: any = {};
         updatedCif.forEach((value, key) => {
           updatedCifData[key] = value;
         });
         console.log('Converted FormData to object:', updatedCifData);
   
-        // Call the service with the extracted id and FormData
         this.cifService.updateCIF(Number(id), updatedCif).subscribe({
           next: () => {
             const index = this.dataSource.data.findIndex(item => item.id === Number(id));
             if (index !== -1) {
-              // Update the table with the new data
-              this.dataSource.data[index] = updatedCifData; // Use converted object
-              this.dataSource._updateChangeSubscription(); // Refresh table
+              this.dataSource.data[index] = updatedCifData;
+              this.dataSource._updateChangeSubscription();
             }
             alert('CIF updated successfully!');
           },

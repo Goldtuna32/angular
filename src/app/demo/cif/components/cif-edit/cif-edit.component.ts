@@ -24,23 +24,23 @@ export class CifEditComponent {
     public dialogRef: MatDialogRef<CifEditComponent>,
     private fb: FormBuilder,
     @Inject(MAT_DIALOG_DATA) public data: CIF
-  ) {
-    this.originalCif = data; // Store the injected CIF data
-    this.editForm = this.fb.group({
-      id: [data.id, Validators.required],
-      name: [data.name, Validators.required],
-      nrcNumber: [data.nrcNumber, Validators.required],
-      branchId: [data.branchId, Validators.required],
-      dob: [data.dob],
-      gender: [data.gender],
-      phoneNumber: [data.phoneNumber],
-      email: [data.email],
-      address: [data.address],
-      maritalStatus: [data.maritalStatus],
-      occupation: [data.occupation],
-      incomeSource: [data.incomeSource],
-      // No need for fNrcPhotoUrl or bNrcPhotoUrl in the form unless editable as text
-    });
+) {
+  this.originalCif = data;
+  console.log('Original CIF data:', this.originalCif); // Debug
+  this.editForm = this.fb.group({
+    id: [data.id, Validators.required],
+    name: [data.name, Validators.required],
+    nrcNumber: [data.nrcNumber, Validators.required],
+    branchId: [data.branchId, Validators.required],
+    dob: [data.dob],
+    gender: [data.gender],
+    phoneNumber: [data.phoneNumber],
+    email: [data.email],
+    address: [data.address],
+    maritalStatus: [data.maritalStatus],
+    occupation: [data.occupation],
+    incomeSource: [data.incomeSource],
+  });
   }
 
   handleFileInput(event: any, type: 'frontNrc' | 'backNrc') {
@@ -58,13 +58,13 @@ export class CifEditComponent {
     if (this.editForm.valid) {
       const formData = new FormData();
       const formValue = this.editForm.getRawValue();
-
+  
       const id = formValue.id ? Number(formValue.id) : null;
       if (!id || isNaN(id) || id <= 0) {
         console.error('Invalid CIF ID for editing:', formValue.id || 'undefined');
         return;
       }
-
+  
       formData.append('id', id.toString());
       Object.keys(this.editForm.value).forEach((key) => {
         if (key !== 'id') {
@@ -72,29 +72,28 @@ export class CifEditComponent {
           formData.append(key, value !== null && value !== undefined ? value : '');
         }
       });
-
+  
       // Handle front NRC photo
       if (this.frontNrcFile) {
         formData.append('frontNrc', this.frontNrcFile);
-      } else if (this.originalCif.fNrcPhotoUrl) {
+      } else if (this.originalCif.fNrcPhotoUrl && this.originalCif.fNrcPhotoUrl.trim()) {
         formData.append('fNrcPhotoUrl', this.originalCif.fNrcPhotoUrl);
       }
-
+  
       // Handle back NRC photo
       if (this.backNrcFile) {
         formData.append('backNrc', this.backNrcFile);
-      } else if (this.originalCif.bNrcPhotoUrl) {
+      } else if (this.originalCif.bNrcPhotoUrl && this.originalCif.bNrcPhotoUrl.trim()) {
         formData.append('bNrcPhotoUrl', this.originalCif.bNrcPhotoUrl);
       }
-
-      // Log FormData for debugging
+  
       console.log('Final FormData contents before close:');
       const formDataContents: { [key: string]: any } = {};
       formData.forEach((value, key) => {
         formDataContents[key] = value;
       });
       console.log(formDataContents);
-
+  
       this.dialogRef.close(formData);
     }
   }
