@@ -144,10 +144,10 @@ export class CifCreateComponent implements OnInit {
     
 
     if (this.frontNrcFile) {
-      formData.append('frontNrc', this.frontNrcFile);
+      formData.append('fNrcPhotoUrl', this.frontNrcFile);
     }
     if (this.backNrcFile) {
-      formData.append('backNrc', this.backNrcFile);
+      formData.append('bNrcPhotoUrl', this.backNrcFile);
     }
 
 
