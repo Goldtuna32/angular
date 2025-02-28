@@ -342,7 +342,6 @@
   "Yangon ": {
     "East Yangon": [
       "Botataung",
-      "City",
       "Dagon Seikkan",
       "Dawbon",
       "East Dagon",
@@ -358,7 +357,6 @@
       "Yankin"
     ],
     "North Yangon": [
-      "City",
       "Hlaingthaya",
       "Hlegu",
       "Hmawbi",
@@ -370,7 +368,6 @@
       "Taikkyi"
     ],
     "South Yangon": [
-      "City",
       "Cocokyun",
       "Dala",
       "Kawhmu",
@@ -387,7 +384,6 @@
     "West Yangon(Downtown)": [
       "Ahlon",
       "Bahan",
-      "City",
       "Dagon",
       "Hlaing",
       "Kamayut",

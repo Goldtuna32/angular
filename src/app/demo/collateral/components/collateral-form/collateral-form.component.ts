@@ -15,12 +15,15 @@ import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
   styleUrl: './collateral-form.component.scss'
 })
 export class CollateralFormComponent implements OnInit {
+  // Add this new property
+  showSuccessMessage = false;
+  
   // Add these new properties
   showDropdown = false;
   searchInput = '';
   frontPhotoPreview: string | null = null;
   backPhotoPreview: string | null = null;
-
+  
   collateralForm!: FormGroup;
   cifs: any[] = [];
   filteredCifs: any[] = [];  // For filtered results
@@ -73,17 +76,29 @@ export class CollateralFormComponent implements OnInit {
 
       this.collateralService.createCollateral(formData).subscribe({
         next: (response) => {
-          console.log('Collateral created successfully:', response);
-          this.router.navigate(['/collateral']);
+          this.showSuccessMessage = true;
+          setTimeout(() => {
+            this.showSuccessMessage = false;
+            this.router.navigate(['/collateral']);
+          }, 2000);
         },
         error: (error) => {
           console.error('Error creating collateral:', error);
+          // Optionally add error message handling here
+          this.showSuccessMessage = false;
         }
       });
     } else {
       console.error('Form is invalid');
+      Object.keys(this.collateralForm.controls).forEach(key => {
+        const control = this.collateralForm.get(key);
+        if (control?.invalid) {
+          control.markAsTouched();
+        }
+      });
     }
   }
+  // Add these missing methods
   private loadCifs(): void {
     this.collateralService.getAllCifs().subscribe({
       next: (data) => {
@@ -94,57 +109,6 @@ export class CollateralFormComponent implements OnInit {
         console.error('Error loading CIFs:', error);
       }
     });
-  }
-  filterCifs(event: any): void {
-    this.searchInput = event.target.value;
-    if (!this.searchInput) {
-      this.filteredCifs = [];
-      this.showDropdown = false;
-      return;
-    }
-
-    const search = this.searchInput.toLowerCase();
-    this.filteredCifs = this.cifs.filter(cif =>
-      cif.name.toLowerCase().includes(search) ||
-      cif.nrcNumber.toLowerCase().includes(search)
-    ).slice(0, 10);
-    this.showDropdown = true;
-  }
-  selectCif(cif: any): void {
-    this.searchInput = `${cif.name} - ${cif.nrcNumber}`;
-    this.collateralForm.patchValue({ cifId: cif.id });
-    this.showDropdown = false;
-  }
-  onBlur(): void {
-    setTimeout(() => {
-      this.showDropdown = false;
-    }, 200);
-  }
-  selectedCif: any = null;
-  search = (text$: Observable<string>) =>
-    text$.pipe(
-      debounceTime(200),
-      distinctUntilChanged(),
-      map(term => term === '' ? []
-        : this.cifs.filter(cif =>
-          cif.name.toLowerCase().includes(term.toLowerCase()) ||
-          cif.nrcNumber.toLowerCase().includes(term.toLowerCase())
-        ).slice(0, 10))
-    )
-  formatter = (cif: any) => `${cif.name} - ${cif.nrcNumber}`;
-  onSelect(event: any): void {
-    this.selectedCif = event.item;
-    this.collateralForm.patchValue({
-      cifId: event.item.id
-    });
-  }
-  toggleDropdown(event: Event): void {
-    event.preventDefault();
-    event.stopPropagation();
-    this.showDropdown = !this.showDropdown;
-    if (this.showDropdown) {
-      this.filteredCifs = this.cifs.slice(0, 10); // Show first 10 items
-    }
   }
   onFrontPhotoSelected(event: any): void {
     const file = event.target.files[0];
@@ -161,7 +125,6 @@ export class CollateralFormComponent implements OnInit {
       reader.readAsDataURL(file);
     }
   }
-
   onBackPhotoSelected(event: any): void {
     const file = event.target.files[0];
     if (file) {
@@ -176,5 +139,38 @@ export class CollateralFormComponent implements OnInit {
       };
       reader.readAsDataURL(file);
     }
+  }
+  filterCifs(event: any): void {
+    this.searchInput = event.target.value;
+    if (!this.searchInput) {
+      this.filteredCifs = [];
+      this.showDropdown = false;
+      return;
+    }
+  
+    const search = this.searchInput.toLowerCase();
+    this.filteredCifs = this.cifs.filter(cif =>
+      cif.name.toLowerCase().includes(search) ||
+      cif.nrcNumber.toLowerCase().includes(search)
+    ).slice(0, 10);
+    this.showDropdown = true;
+  }
+  selectCif(cif: any): void {
+    this.searchInput = `${cif.name} - ${cif.nrcNumber}`;
+    this.collateralForm.patchValue({ cifId: cif.id });
+    this.showDropdown = false;
+  }
+  toggleDropdown(event: Event): void {
+    event.preventDefault();
+    event.stopPropagation();
+    this.showDropdown = !this.showDropdown;
+    if (this.showDropdown) {
+      this.filteredCifs = this.cifs.slice(0, 10);
+    }
+  }
+  onBlur(): void {
+    setTimeout(() => {
+      this.showDropdown = false;
+    }, 200);
   }
 }
