@@ -15,7 +15,6 @@
       <p><strong>Created At:</strong> {{ cif.createdAt | date: 'long' }}</p>
       <p><strong>Branch ID:</strong> {{ cif.branchId }}</p>
 
-
       <!-- ✅ Fix ngClass Issue -->
       <p><strong>Has Current Account:</strong> 
         <span [ngClass]="cif.hasCurrentAccount ? 'text-green-500 font-semibold' : 'text-red-500 font-semibold'">
@@ -23,30 +22,38 @@
         </span>
       </p>
   
-      <!-- NRC Images -->
+      <!-- NRC Images with Placeholder -->
       <div class="flex space-x-4 mt-4">
-        <div class="flex space-x-4 mt-4">
-            <!-- Front NRC Image -->
-            <div *ngIf="cif.fNrcPhotoUrl" class="text-center">
-              <p class="font-semibold">Front NRC</p>
-              <p-image [src]="cif.fNrcPhotoUrl" 
-                       alt="Front NRC" 
-                       styleClass="w-[225px] h-[276px] rounded shadow-lg" 
-                       [preview]="true">
-              </p-image>
-            </div>
-          
-            <!-- Back NRC Image -->
-            <div *ngIf="cif.bNrcPhotoUrl" class="text-center">
-              <p class="font-semibold">Back NRC</p>
-              <p-image [src]="cif.bNrcPhotoUrl" 
-                       alt="Back NRC" 
-                       styleClass="w-[225px] h-[276px] rounded shadow-lg" 
-                       [preview]="true">
-              </p-image>
-            </div>
+        <!-- Front NRC Image -->
+        <div class="text-center">
+          <p class="font-semibold">Front NRC</p>
+          <div *ngIf="cif.fNrcPhotoUrl; else noFrontNrc">
+            <img [src]="cif.fNrcPhotoUrl" 
+                 alt="Front NRC" 
+                 class="w-[225px] h-[276px] rounded shadow-lg cursor-pointer">
           </div>
-          
+          <ng-template #noFrontNrc>
+            <div class="w-[225px] h-[276px] rounded shadow-lg bg-gray-100 flex items-center justify-center">
+              <p class="text-gray-500">No Front NRC Image Available</p>
+            </div>
+          </ng-template>
+        </div>
+      
+        <!-- Back NRC Image -->
+        <div class="text-center">
+          <p class="font-semibold">Back NRC</p>
+          <div *ngIf="cif.bNrcPhotoUrl; else noBackNrc">
+            <img [src]="cif.bNrcPhotoUrl" 
+                 alt="Back NRC" 
+                 class="w-[225px] h-[276px] rounded shadow-lg cursor-pointer">
+          </div>
+          <ng-template #noBackNrc>
+            <div class="w-[225px] h-[276px] rounded shadow-lg bg-gray-100 flex items-center justify-center">
+              <p class="text-gray-500">No Back NRC Image Available</p>
+            </div>
+          </ng-template>
+        </div>
+      </div>
     </div>
   
     <div class="mt-6 flex justify-end">

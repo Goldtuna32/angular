@@ -1,25 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { CIF } from '../models/cif.model';
 
-export interface CIF {
-  id: number;
-  name: string;
-  nrcNumber: string;
-  dob: string; // Use string because JSON from API returns it as text
-  gender: string;
-  phoneNumber: string;
-  email: string;
-  address: string;
-  maritalStatus: string;
-  occupation: string;
-  incomeSource: string;
-  createdAt: string;
-  branchId: number;
-  hasCurrentAccount: boolean;
-  fNrcPhotoUrl: string; // Cloudinary Front NRC Image
-  bNrcPhotoUrl: string;
-}
+
 
 @Injectable({
   providedIn: 'root'
@@ -33,10 +17,9 @@ export class CifService {
     return this.http.get<any[]>(`${this.baseUrl}`);
   }
 
-  updateCIF(cif: CIF) {
-    return this.http.put(`${this.baseUrl}/${cif.id}`, cif);
-  }
-
+  updateCIF(id: number, cifData: FormData): Observable<any> {
+    return this.http.put(`${this.baseUrl}/${id}`, cifData);
+  }  
 
   // Delete CIF
   deleteCIF(id: number): Observable<any> {
