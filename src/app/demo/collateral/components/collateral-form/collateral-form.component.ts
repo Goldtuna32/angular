@@ -49,27 +49,27 @@ export class CollateralFormComponent implements OnInit {
   }
   // Remove all other onSubmit methods and keep only this one
   onSubmit(): void {
-    console.log('Form validity:', this.collateralForm.valid);
-    console.log('Form values:', this.collateralForm.value);
-    console.log('Form errors:', this.collateralForm.errors);
-    
     if (this.collateralForm.valid) {
       const formData = new FormData();
-      const collateralData = this.collateralForm.value;
       
-      // Append all form fields to FormData
-      Object.keys(collateralData).forEach(key => {
-        if (key === 'F_collateralPhoto' || key === 'B_collateralPhoto') {
-          const file = collateralData[key];
-          if (file instanceof File) {
-            formData.append(key, file, file.name);
-          }
-        } else if (key === 'date') {
-          formData.append(key, collateralData[key].toISOString());
-        } else {
-          formData.append(key, collateralData[key]);
-        }
-      });
+      // Append all required fields to FormData
+      formData.append('value', this.collateralForm.get('value')?.value);
+      formData.append('description', this.collateralForm.get('description')?.value);
+      formData.append('status', this.collateralForm.get('status')?.value);
+      formData.append('cifId', this.collateralForm.get('cifId')?.value);
+      formData.append('collateralTypeId', this.collateralForm.get('collateralTypeId')?.value);
+      
+      // Append photo files
+      const frontPhoto = this.collateralForm.get('F_collateralPhoto')?.value;
+      const backPhoto = this.collateralForm.get('B_collateralPhoto')?.value;
+      
+      if (frontPhoto) {
+        formData.append('F_collateralPhoto', frontPhoto);
+      }
+      
+      if (backPhoto) {
+        formData.append('B_collateralPhoto', backPhoto);
+      }
 
       this.collateralService.createCollateral(formData).subscribe({
         next: (response) => {
@@ -80,6 +80,8 @@ export class CollateralFormComponent implements OnInit {
           console.error('Error creating collateral:', error);
         }
       });
+    } else {
+      console.error('Form is invalid');
     }
   }
   private loadCifs(): void {
