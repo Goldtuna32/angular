@@ -116,6 +116,23 @@ export const NavigationItems: NavigationItem[] = [
       }
     ]
   },
+
+  {
+    id: 'transaction',
+    title: 'transaction',
+    type: 'group',
+    icon: 'icon-group',
+    children: [
+      {
+        id: 'transaction',
+        title: 'transaction',
+        type: 'item',
+        url: '/transaction',
+        icon: 'feather icon-box'
+      }
+    ]
+  },
+
   {
     id: 'collateral',
     title: 'Collateral',
